@@ -1,23 +1,20 @@
-import logo from './logo.svg';
-import './App.css';
+import ReactPlayer from 'react-player';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <ReactPlayer
+        url="http://localhost:3001/media/Audi_A4_S4.m3u8"
+        playing
+        controls
+        width="100%"
+        height="100%"
+        config={{
+          file: {
+            forceHLS: true,
+          },
+        }}
+      />
     </div>
   );
 }
