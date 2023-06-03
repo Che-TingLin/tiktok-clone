@@ -3,6 +3,7 @@ import { useRef, useState, useCallback, useEffect, useMemo } from 'react';
 import useAxios from 'hooks/useAxios';
 import api from 'api';
 import Layout from 'layout/Layout';
+import TypeControl from 'components/TypeControl';
 import Player from 'components/Player';
 import Loading from 'components/Loading';
 
@@ -12,11 +13,11 @@ function App() {
   const { sendRequest: sendForYouListRequest } = useAxios();
   const [list, setList] = useState({});
   const type = 'forYou';
-  const index = 1;
+  const [index, setIndex] = useState(0);
 
   const video = useMemo(() => {
     return list?.[type]?.[index];
-  }, [list]);
+  }, [list, index]);
 
   const getFollowingList = useCallback(async () => {
     try {
@@ -46,9 +47,22 @@ function App() {
     };
   }, [getFollowingList, getForYouList]);
 
+  const clikedHandler = (item) => {
+    console.log('item', item);
+  };
+
   return (
     <div className="App">
-      <Layout>{video ? <Player url={video.play_url} /> : <Loading />}</Layout>
+      <Layout>
+        {video ? (
+          <>
+            <TypeControl clikedHandler={clikedHandler} />
+            <Player url={video.play_url} />{' '}
+          </>
+        ) : (
+          <Loading />
+        )}
+      </Layout>
     </div>
   );
 }
