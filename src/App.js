@@ -6,6 +6,7 @@ import Layout from 'layout/Layout';
 import TypeControl from 'components/TypeControl';
 import Player from 'components/Player';
 import Loading from 'components/Loading';
+import NextCover from 'components/NextCover';
 
 function App() {
   const { list } = useList();
@@ -40,19 +41,11 @@ function App() {
           <Loading />
         )}
         {nextVido ? (
-          <div
-            style={{
-              width: '100%',
-              height: `${NEXT_COVER_CONTAINER_HEIGHT}px`,
-              overflow: 'hidden',
-            }}
-          >
-            <img
-              style={{ width: '100%' }}
-              src={nextVido.cover}
-              alt={nextVido.title}
-            />
-          </div>
+          <NextCover
+            height={NEXT_COVER_CONTAINER_HEIGHT}
+            cover={nextVido.cover}
+            title={nextVido.title}
+          />
         ) : null}
       </Layout>
     </div>
