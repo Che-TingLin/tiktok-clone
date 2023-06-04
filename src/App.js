@@ -1,5 +1,6 @@
-import { useState, useMemo, useRef, useEffect } from 'react';
+import { useState, useMemo, useRef } from 'react';
 
+import { typeIndexInitiator } from 'utils';
 import useList from 'hooks/useList';
 import useIndex from 'hooks/useIndex';
 import Layout from 'layout/Layout';
@@ -18,6 +19,7 @@ function App() {
     height: NEXT_COVER_CONTAINER_HEIGHT,
   });
   const playerRef = useRef();
+  const [cacheTime, setCacheTime] = useState(typeIndexInitiator);
 
   const video = useMemo(() => {
     return list?.[type]?.[index];
@@ -28,12 +30,12 @@ function App() {
   }, [list, type, nextIndex]);
 
   const clikedHandler = (item) => {
+    setCacheTime((prev) => ({
+      ...prev,
+      [type]: playerRef.current.getCurrentTime(),
+    }));
     setType(item);
   };
-
-  useEffect(() => {
-    console.log('index', index);
-  }, [index]);
 
   return (
     <div className="App">
@@ -41,7 +43,13 @@ function App() {
         {video ? (
           <>
             <TypeControl type={type} clikedHandler={clikedHandler} />
-            <Player url={video.play_url} playerRef={playerRef} />
+            <Player
+              url={video.play_url}
+              playerRef={playerRef}
+              type={type}
+              cacheTime={cacheTime}
+              setCacheTime={setCacheTime}
+            />
           </>
         ) : (
           <Loading />
