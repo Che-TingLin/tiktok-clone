@@ -13,7 +13,7 @@ const Player = (props) => {
         muted
         loop
         width="100%"
-        height="100%"
+        height="100vh"
         config={{
           file: {
             forceHLS: Hls.isSupported(),
