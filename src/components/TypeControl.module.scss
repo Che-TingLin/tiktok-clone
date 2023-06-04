@@ -6,12 +6,16 @@
   width: 100%;
   justify-content: center;
   color: #ffffff;
-  -webkit-text-stroke: 0.7px black;
+  -webkit-text-stroke: 0.7px #000000;
   font-size: 20px;
   font-weight: bold;
   .item {
     &:not(:last-child) {
       margin-right: 16px;
     }
+  }
+  .active {
+    color: #006cf8;
+    -webkit-text-stroke: 0.7px #91bbff;
   }
 }

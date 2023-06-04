@@ -4,11 +4,12 @@ import Hls from 'hls.js';
 import classes from './Player.module.scss';
 
 const Player = (props) => {
-  const { url } = props;
+  const { url, playerRef } = props;
 
   return (
     <>
       <ReactPlayer
+        ref={playerRef}
         className={classes.player}
         url={url}
         controls

@@ -1,17 +1,20 @@
-import classes from './TypeControl.module.css';
+import classes from './TypeControl.module.scss';
+import { typeList } from 'utils';
 
 const TypeControl = (props) => {
-  const { clikedHandler } = props;
-  const typeList = [
-    { label: 'Following', value: 'following' },
-    { label: 'For You', value: 'forYou' },
-  ];
+  const { type, clikedHandler } = props;
+
+  const classNameHandler = (value) => {
+    return value === type
+      ? [classes.item, classes.active].join(' ')
+      : classes.item;
+  };
   return (
     <div className={classes.control}>
       {typeList.map((type) => (
         <span
           key={type.value}
-          className={classes.item}
+          className={classNameHandler(type.value)}
           onClick={() => clikedHandler(type.value)}
         >
           {type.label}

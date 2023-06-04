@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useRef, useEffect } from 'react';
 
 import useList from 'hooks/useList';
 import useIndex from 'hooks/useIndex';
@@ -11,31 +11,37 @@ import NextCover from 'components/NextCover';
 function App() {
   const { list } = useList();
   const NEXT_COVER_CONTAINER_HEIGHT = 50;
-  const type = 'forYou';
-  const { index, nextIndex, setIndex } = useIndex(
-    list?.[type]?.length,
-    NEXT_COVER_CONTAINER_HEIGHT
-  );
+  const [type, setType] = useState('forYou');
+  const { index, nextIndex } = useIndex({
+    type,
+    length: list?.[type]?.length,
+    height: NEXT_COVER_CONTAINER_HEIGHT,
+  });
+  const playerRef = useRef();
 
   const video = useMemo(() => {
     return list?.[type]?.[index];
-  }, [list, index]);
+  }, [list, type, index]);
 
   const nextVido = useMemo(() => {
     return list?.[type]?.[nextIndex];
-  }, [list, nextIndex]);
+  }, [list, type, nextIndex]);
 
   const clikedHandler = (item) => {
-    console.log('item', item);
+    setType(item);
   };
+
+  useEffect(() => {
+    console.log('index', index);
+  }, [index]);
 
   return (
     <div className="App">
       <Layout>
         {video ? (
           <>
-            <TypeControl clikedHandler={clikedHandler} />
-            <Player url={video.play_url} />{' '}
+            <TypeControl type={type} clikedHandler={clikedHandler} />
+            <Player url={video.play_url} playerRef={playerRef} />
           </>
         ) : (
           <Loading />

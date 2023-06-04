@@ -1,14 +1,16 @@
 import { useState, useEffect, useRef, useMemo } from 'react';
 
-const useIndex = (length, height) => {
-  const [index, setIndex] = useState(0);
+import { typeIndexInitiator } from 'utils';
+
+const useIndex = ({ type, length, height }) => {
+  const [index, setIndex] = useState(typeIndexInitiator);
   const lastTime = useRef();
   const nextIndex = useMemo(() => {
     if (!length) {
       return 0;
     }
-    return (index + 1) % length;
-  }, [length, index]);
+    return (index[type] + 1) % length;
+  }, [length, index, type]);
 
   const isNextTimeOkHandler = () => {
     const now = new Date().getTime();
@@ -35,13 +37,16 @@ const useIndex = (length, height) => {
             return;
           }
           // 滾動到底部時，播放下一個影片
-          setIndex((prevIndex) => (prevIndex + 1) % length);
+          setIndex((prev) => ({ ...prev, [type]: (prev[type] + 1) % length }));
         } else if (window.scrollY <= 0) {
           if (!isNextTimeOkHandler()) {
             return;
           }
           // 滾動到頂部時，播放上一個影片
-          setIndex((prevIndex) => (prevIndex - 1 + length) % length);
+          setIndex((prev) => ({
+            ...prev,
+            [type]: (prev[type] - 1 + length) % length,
+          }));
         }
       };
 
@@ -50,7 +55,7 @@ const useIndex = (length, height) => {
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, [length, height]);
+  }, [length, height, type]);
 
   useEffect(() => {
     let timer;
@@ -64,7 +69,7 @@ const useIndex = (length, height) => {
     };
   }, [index, height]);
 
-  return { index, nextIndex, setIndex };
+  return { index: index[type], nextIndex, setIndex };
 };
 
 export default useIndex;
